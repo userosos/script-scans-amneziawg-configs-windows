@@ -33,3 +33,15 @@
 ```bash
 git clone [https://github.com/ВАШ_АККАУНТ/script-scans-amneziawg-configs-windows.git](https://github.com/ВАШ_АККАУНТ/script-scans-amneziawg-configs-windows.git)
 cd script-scans-amneziawg-configs-windows
+2. Подготовка файловПоместите ваши файлы конфигураций .conf рядом со скриптом test_awg.ps1 (можно отдельными файлами или внутри папок/распакованных архивов).3. ЗапускНажмите сочетание клавиш Win + X и выберите «Терминал (Администратор)» или «PowerShell (Администратор)».Перейдите в папку со скриптом:PowerShellcd "C:\Путь\К\Папке"
+Разрешите запуск скриптов для текущего сеанса:PowerShellSet-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+Запустите тестирование:PowerShell.\test_awg.ps1
+📂 Структура проекта после работыПосле завершения сканирования в папке появятся:Plaintext├── working/          # Рабочие конфигурации (IP успешно сменился)
+├── failed/           # Нерабочие конфигурации (нет связи / таймаут / блокировка)
+├── results.csv       # Таблица со сводкой результатов
+├── test_awg.ps1      # Файл скрипта
+└── ...               # Исходные файлы
+Формат файла results.csv:Фрагмент кодаconfig,status,external_ip
+NL_12.conf,SUCCESS,185.156.46.22
+US_04.conf,FAIL,
+⚙️ Как работает проверкаСкрипт запрашивает ваш публичный IP через сервис api.ipify.org.Копирует тестируемый конфиг во временный файл $env:TEMP\awgtest.conf.Командой amneziawg.exe /installtunnelservice поднимает туннель как фоновую службу Windows AmneziaWGTunnel$awgtest.Ожидает 4 секунды для завершения обфусцированного рукопожатия и установки маршрутов в таблице Windows.Выполняет запрос к https://api.ipify.org через curl.exe:Если получен IP-адрес VPN (отличный от вашего домашнего) $\rightarrow$ статус SUCCESS, файл перемещается в working/.Если произошел таймаут или трафик не перенаправился $\rightarrow$ статус FAIL, файл перемещается в failed/.Служба принудительно останавливается и выгружается с помощью sc.exe delete.❓ Возможные неполадки«Клиент AmneziaWG не найден»: убедитесь, что установлен именно клиент AmneziaWG, а не только стандартный WireGuard. Если программа установлена в нестандартную директорию, укажите путь к amneziawg.exe в массиве $AwgPaths внутри скрипта.Ошибки политик выполнения (PSSecurityException): не забудьте выполнить Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass перед запуском скрипта.Во время теста кратковременно пропадает интернет: это штатное поведение. При параметре AllowedIPs = 0.0.0.0/0 весь системный шлюз переключается на проверяемый туннель на 3–4 секунды.
