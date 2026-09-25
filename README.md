@@ -34,7 +34,7 @@
 ### Способ 1. Клонирование через Git
 
 ```bash
-git clone [https://github.com/userosos/script-scans-amneziawg-configs-windows.git](https://github.com/userosos/script-scans-amneziawg-configs-windows.git)
+git clone https://github.com/userosos/script-scans-amneziawg-configs-windows.git
 cd script-scans-amneziawg-configs-windows
 ```
 
