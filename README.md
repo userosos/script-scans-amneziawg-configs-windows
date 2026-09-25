@@ -31,8 +31,9 @@
 ### 1. Клонирование или загрузка
 Склонируйте репозиторий или скачайте архив с кодом:
 ```bash
-git clone [https://github.com/ВАШ_АККАУНТ/script-scans-amneziawg-configs-windows.git](https://github.com/ВАШ_АККАУНТ/script-scans-amneziawg-configs-windows.git)
+git clone [https://github.com/userosos/script-scans-amneziawg-configs-windows.git](https://github.com/userosos/script-scans-amneziawg-configs-windows.git)
 cd script-scans-amneziawg-configs-windows
+```
 2. Подготовка файловПоместите ваши файлы конфигураций .conf рядом со скриптом test_awg.ps1 (можно отдельными файлами или внутри папок/распакованных архивов).3. ЗапускНажмите сочетание клавиш Win + X и выберите «Терминал (Администратор)» или «PowerShell (Администратор)».Перейдите в папку со скриптом:PowerShellcd "C:\Путь\К\Папке"
 Разрешите запуск скриптов для текущего сеанса:PowerShellSet-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 Запустите тестирование:PowerShell.\test_awg.ps1
